@@ -8,7 +8,7 @@ use Filament\Forms\Components\BaseFileUpload;
 
 class Dropzone extends BaseFileUpload
 {
-    protected string $view = 'forms.components.dropzone';
+    protected string $view = 'filament-dropzone::forms.components.dropzone';
 
     protected bool | Closure $autoProcessQueue = true;
     protected bool | Closure $allowMultiple = false;
