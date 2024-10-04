@@ -1,3 +1,10 @@
+## About
+Filament Dropzone is a package that provides a Dropzone component for the Filament admin panel.
+Main purpose of this package is to provide a simple way to allow chunked uploads in Filament/Livewire applications
+without the need to write custom JavaScript code. \
+Dropzone component extends `Filament\Forms\Components\BaseFileUpload` and uses some of its methods.
+See below for more information.
+
 ## Installation
 ```bash
 composer require kkosmider/filament-dropzone
@@ -8,8 +15,6 @@ composer require kkosmider/filament-dropzone
 ```php
 use Kkosmider\FilamentDropzone\Forms\Components\Dropzone;
 
-// For methods available on the Dropzone component,
-// check the Kkosmider\FilamentDropzone\Forms\Components\Dropzone class
 Dropzone::make('upload')
     ->uploadEndpointUrl('/api/upload-document')
     ->autoProcessQueue()
@@ -73,3 +78,27 @@ return response()->json([
    'chunk' => $chunkName,
 ]);
 ```
+
+## Available methods:
+```
+maxFilesize()
+acceptedFiles()
+chunkSize()
+chunking()
+allowMultiple()
+parallelUploads()
+parallelChunkUploads()
+autoProcessQueue()
+uploadEndpointUrl()
+retryChunks()
+retryChunksLimit()
+clearOnFinish()
+directory()
+diskName()
+```
+
+## ToDo:
+- [ ] Built-in upload endpoint
+- [ ] Methods documentation
+- [ ] Implement more BaseFileUpload methods
+- [ ] Rename current ones to match BaseFileUpload methods if they do the same
