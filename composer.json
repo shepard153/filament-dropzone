@@ -1,0 +1,27 @@
+{
+  "name": "kkosmider/filament-dropzone",
+  "description": "Filament dropzone component",
+  "type": "library",
+  "license": "MIT",
+  "autoload": {
+    "psr-4": {
+      "Kkosmider\\FilamentDropzone\\": "src/"
+    }
+  },
+  "authors": [
+    {
+      "name": "Kamil Kośmider"
+    }
+  ],
+  "minimum-stability": "dev",
+  "require": {
+    "filament/support": "^3.0"
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Kkosmider\\FilamentDropzone\\FilamentDropzoneServiceProvider"
+      ]
+    }
+  }
+}
