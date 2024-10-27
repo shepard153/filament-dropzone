@@ -21,6 +21,7 @@ class Dropzone extends BaseFileUpload
     protected int | Closure | null $parallelUploads = 1;
     protected int | Closure | null $chunkSize = 2000000;
     protected int | Closure | null $retryChunksLimit = 3;
+    protected int | Closure | null $maxVideoDuration = null;
 
     protected string | Closure $acceptedFiles = '';
     protected string | Closure $uploadEndpointUrl = '/api/attachments';
@@ -95,6 +96,13 @@ class Dropzone extends BaseFileUpload
         return $this;
     }
 
+    public function maxVideoDuration($maxVideoDuration): static
+    {
+        $this->maxVideoDuration = $maxVideoDuration;
+
+        return $this;
+    }
+
     public function acceptedFiles($acceptedFiles): static
     {
         $this->acceptedFiles = $acceptedFiles;
@@ -157,6 +165,11 @@ class Dropzone extends BaseFileUpload
     public function getRetryChunksLimit(): int
     {
         return $this->evaluate($this->retryChunksLimit);
+    }
+
+    public function getMaxVideoDuration(): int
+    {
+        return $this->evaluate($this->maxVideoDuration);
     }
 
     public function getAcceptedFiles(): string

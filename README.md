@@ -95,6 +95,7 @@ retryChunksLimit()
 clearOnFinish()
 directory()
 diskName()
+maxVideoDuration()
 ```
 
 ## ToDo:

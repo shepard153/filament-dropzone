@@ -22,6 +22,7 @@
                clearOnFinish: @js($getClearOnFinish()),
                directory: @js($getDirectory()),
                disk: @js($getDiskName()),
+               maxVideoDuration: @js($getMaxVideoDuration()),
                state: $wire.{{ $applyStateBindingModifiers("\$entangle('{$getStatePath()}')") }},
            })"
        wire:ignore

@@ -16,10 +16,12 @@ export default function dropzoneComponent({
     clearOnFinish,
     directory,
     disk,
+    maxVideoDuration,
     state
 }) {
     return {
         dropzone: null,
+        error: null,
         state,
 
         init: async function () {
@@ -46,16 +48,19 @@ export default function dropzoneComponent({
 
             this.dropzone = new Dropzone(dropzoneElement, options);
 
-/*            this.$el.closest('form')
-                ?.querySelector("button[type=submit]")
-                .addEventListener("click", (e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    this.dropzone.processQueue();
-                });*/
-
-            this.dropzone.on("addedfile", () => {
+            this.dropzone.on("addedfile", (file) => {
                 this.dispatchFormEvent('form-processing-started');
+
+                if (maxVideoDuration && file.type.startsWith('video/')) {
+                    const video = document.createElement('video');
+                    video.src = URL.createObjectURL(file);
+                    video.onloadedmetadata = () => {
+                        if (video.duration > maxVideoDuration) {
+                            this.dropzone.removeFile(file);
+                            this.error = `Video duration is too long. Maximum allowed duration is ${maxVideoDuration} seconds.`;
+                        }
+                    }
+                }
             });
 
             this.dropzone.on("error", (file, response) => {
@@ -65,7 +70,7 @@ export default function dropzoneComponent({
 
                 notification.title(`Error uploading file: ${file.name}`)
                     .warning()
-                    .body(response?.message)
+                    .body(this.error ?? response?.message)
                     .send();
             });
 
@@ -77,21 +82,23 @@ export default function dropzoneComponent({
 
                 this.dispatchFormEvent('form-processing-finished');
 
-                const notification = new window.FilamentNotification();
+                if (this.dropzone.getFilesWithStatus(Dropzone.ERROR).length !== this.dropzone.files.length) {
+                    const notification = new window.FilamentNotification();
 
-                notification.title("Upload complete")
-                    .success()
-                    .send();
+                    notification.title("Upload complete")
+                        .success()
+                        .send();
 
-                if (clearOnFinish) {
-                    notification.body("Upload zone will be cleared now.");
+                    if (clearOnFinish) {
+                        notification.body("Upload zone will be cleared now.");
 
-                    setTimeout(() => {
-                        this.dropzone.removeAllFiles();
-                    }, 5000);
+                        setTimeout(() => {
+                            this.dropzone.removeAllFiles();
+                        }, 5000);
+                    }
+
+                    notification.send();
                 }
-
-                notification.send();
             });
         },
 
