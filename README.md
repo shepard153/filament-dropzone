@@ -22,7 +22,7 @@ Dropzone::make('upload')
     ->parallelUploads(4)
     ->clearOnFinish()
     ->directory('documents')
-    ->acceptedFiles('application/pdf,.txt,.docx,.doc,application/vnd.openxmlformats-officedocument.wordprocessingml.document'),
+    ->acceptedFiles('application/pdf,.docx,.doc,application/vnd.openxmlformats-officedocument.wordprocessingml.document'),
 ```
 
 ### Chunking uploads:
