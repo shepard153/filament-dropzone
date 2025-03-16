@@ -157,17 +157,17 @@ class Dropzone extends BaseFileUpload
         return $this->evaluate($this->parallelUploads);
     }
 
-    public function getChunkSize(): int
+    public function getChunkSize(): ?int
     {
         return $this->evaluate($this->chunkSize);
     }
 
-    public function getRetryChunksLimit(): int
+    public function getRetryChunksLimit(): ?int
     {
         return $this->evaluate($this->retryChunksLimit);
     }
 
-    public function getMaxVideoDuration(): int
+    public function getMaxVideoDuration(): ?int
     {
         return $this->evaluate($this->maxVideoDuration);
     }
