@@ -16,6 +16,7 @@ class Dropzone extends BaseFileUpload
     protected bool | Closure $parallelChunkUploads = false;
     protected bool | Closure $retryChunks = false;
     protected bool | Closure $clearOnFinish = false;
+    protected bool | Closure $leaveFailed = false;
 
     protected int | Closure | null $maxFilesize = 20;
     protected int | Closure | null $parallelUploads = 1;
@@ -26,93 +27,125 @@ class Dropzone extends BaseFileUpload
     protected string | Closure $acceptedFiles = '';
     protected string | Closure $uploadEndpointUrl = '/api/attachments';
 
-    public function autoProcessQueue($autoProcessQueue = true): static
+    protected string | Closure $defaultMessage = 'Drop files here to upload';
+    protected string | Closure | null $successTitle = null;
+    protected string | Closure | null $successMessage = null;
+
+    public function autoProcessQueue(bool|Closure $autoProcessQueue = true): static
     {
         $this->autoProcessQueue = $autoProcessQueue;
 
         return $this;
     }
 
-    public function allowMultiple($allowMultiple = true): static
+    public function allowMultiple(bool|Closure $allowMultiple = true): static
     {
         $this->allowMultiple = $allowMultiple;
 
         return $this;
     }
 
-    public function chunking($chunking = true): static
+    public function chunking(bool|Closure $chunking = true): static
     {
         $this->chunking = $chunking;
 
         return $this;
     }
 
-    public function parallelChunkUploads($parallelChunkUploads = true): static
+    public function parallelChunkUploads(bool|Closure $parallelChunkUploads = true): static
     {
         $this->parallelChunkUploads = $parallelChunkUploads;
 
         return $this;
     }
 
-    public function clearOnFinish($clearOnFinish = true): static
+    public function clearOnFinish(bool|Closure $clearOnFinish = true): static
     {
         $this->clearOnFinish = $clearOnFinish;
 
         return $this;
     }
 
-    public function retryChunks($retryChunks = true): static
+    public function leaveFailed(bool|Closure $leaveFailed = true): static
+    {
+        $this->leaveFailed = $leaveFailed;
+
+        return $this;
+    }
+
+    public function retryChunks(bool|Closure $retryChunks = true): static
     {
         $this->retryChunks = $retryChunks;
 
         return $this;
     }
 
-    public function maxFilesize($maxFilesize): static
+    public function maxFilesize(int|Closure|null $maxFilesize): static
     {
         $this->maxFilesize = $maxFilesize;
 
         return $this;
     }
 
-    public function parallelUploads($parallelUploads): static
+    public function parallelUploads(int|Closure|null $parallelUploads): static
     {
         $this->parallelUploads = $parallelUploads;
 
         return $this;
     }
 
-    public function chunkSize($chunkSize): static
+    public function chunkSize(int|Closure|null $chunkSize): static
     {
         $this->chunkSize = $chunkSize;
 
         return $this;
     }
 
-    public function retryChunksLimit($retryChunksLimit): static
+    public function retryChunksLimit(int|Closure|null $retryChunksLimit): static
     {
         $this->retryChunksLimit = $retryChunksLimit;
 
         return $this;
     }
 
-    public function maxVideoDuration($maxVideoDuration): static
+    public function maxVideoDuration(int|Closure|null $maxVideoDuration): static
     {
         $this->maxVideoDuration = $maxVideoDuration;
 
         return $this;
     }
 
-    public function acceptedFiles($acceptedFiles): static
+    public function acceptedFiles(string|Closure $acceptedFiles): static
     {
         $this->acceptedFiles = $acceptedFiles;
 
         return $this;
     }
 
-    public function uploadEndpointUrl($uploadEndpointUrl): static
+    public function uploadEndpointUrl(string|Closure $uploadEndpointUrl): static
     {
         $this->uploadEndpointUrl = $uploadEndpointUrl;
+
+        return $this;
+    }
+
+    public function defaultMessage(Closure|string $message): static
+    {
+        $this->defaultMessage = $message;
+
+        return $this;
+    }
+
+    public function successTitle(Closure|string|null $title = null): static
+    {
+        $this->successTitle = $title;
+
+        return $this;
+    }
+
+    public function successMessage(Closure|string|null $message = null): static
+    {
+        $this->successMessage = $message;
 
         return $this;
     }
@@ -145,6 +178,11 @@ class Dropzone extends BaseFileUpload
     public function getClearOnFinish(): bool
     {
         return $this->evaluate($this->clearOnFinish);
+    }
+
+    public function getLeaveFailed(): bool
+    {
+        return $this->evaluate($this->leaveFailed);
     }
 
     public function getMaxFilesize(): int | null
@@ -180,5 +218,20 @@ class Dropzone extends BaseFileUpload
     public function getUploadEndpointUrl(): string
     {
         return $this->evaluate($this->uploadEndpointUrl);
+    }
+
+    public function getDefaultMessage(): string
+    {
+        return $this->evaluate($this->defaultMessage);
+    }
+
+    public function getSuccessTitle(): ?string
+    {
+        return $this->evaluate($this->successTitle);
+    }
+
+    public function getSuccessMessage(): ?string
+    {
+        return $this->evaluate($this->successMessage);
     }
 }
