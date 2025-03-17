@@ -20,9 +20,13 @@
                retryChunks: @js($getRetryChunks()),
                retryChunksLimit: @js($getRetryChunksLimit()),
                clearOnFinish: @js($getClearOnFinish()),
+               leaveFailed: @js($getLeaveFailed()),
                directory: @js($getDirectory()),
                disk: @js($getDiskName()),
                maxVideoDuration: @js($getMaxVideoDuration()),
+               defaultMessage: @js($getDefaultMessage()),
+               successTitle: @js($getSuccessTitle()),
+               successMessage: @js($getSuccessMessage()),
                state: $wire.{{ $applyStateBindingModifiers("\$entangle('{$getStatePath()}')") }},
            })"
        wire:ignore

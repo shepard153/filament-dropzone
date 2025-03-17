@@ -14,9 +14,13 @@ export default function dropzoneComponent({
     retryChunks,
     retryChunksLimit,
     clearOnFinish,
+    leaveFailed,
     directory,
     disk,
     maxVideoDuration,
+    defaultMessage,
+    successTitle,
+    successMessage,
     state
 }) {
     return {
@@ -43,6 +47,7 @@ export default function dropzoneComponent({
                 url: `${url}?directory=${directory}&disk=${disk}`,
                 retryChunks: retryChunks,
                 retryChunksLimit: retryChunksLimit,
+                dictDefaultMessage: defaultMessage,
                 maxFiles: allowMultiple ? null : 1,
             }
 
@@ -80,25 +85,43 @@ export default function dropzoneComponent({
                     : file.name
                 );
 
-                this.dispatchFormEvent('form-processing-finished');
+                const failedUploadsCount = this.dropzone.getFilesWithStatus(Dropzone.ERROR).length;
 
-                if (this.dropzone.getFilesWithStatus(Dropzone.ERROR).length !== this.dropzone.files.length) {
+                if (failedUploadsCount !== this.dropzone.files.length) {
                     const notification = new window.FilamentNotification();
+                    const title = successTitle ?? "Upload complete";
 
-                    notification.title("Upload complete")
-                        .success()
-                        .send();
+                    notification.title(title)
+                        .success();
+
+                    if (successMessage) {
+                        notification.body(successMessage);
+                    }
 
                     if (clearOnFinish) {
-                        notification.body("Upload zone will be cleared now.");
-
                         setTimeout(() => {
                             this.dropzone.removeAllFiles();
                         }, 5000);
                     }
 
+                    if (leaveFailed && failedUploadsCount > 0) {
+                        notification.body('Some files failed to upload. Please check the list below.');
+
+                        this.dropzone.getFilesWithStatus(Dropzone.SUCCESS).forEach((file) => {
+                            this.dropzone.removeFile(file);
+                        });
+                    }
+
                     notification.send();
                 }
+
+                this.dispatchFormEvent('form-processing-finished', {
+                    failedUploadsCount
+                });
+            });
+
+            window.addEventListener('clear-dropzone', () => {
+                this.dropzone.removeAllFiles();
             });
         },
 
@@ -108,7 +131,7 @@ export default function dropzoneComponent({
         },
 
         dispatchFormEvent: function (name, detail = {}) {
-            this.$el.closest('form')?.dispatchEvent(
+            window.dispatchEvent(
                 new CustomEvent(name, {
                     composed: true,
                     cancelable: true,
