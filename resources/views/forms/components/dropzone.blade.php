@@ -1,5 +1,7 @@
 @use('Filament\Support\Facades\FilamentAsset')
 
+@php($componentId = \Illuminate\Support\Str::random(8))
+
 <x-dynamic-component
         :component="$getFieldWrapperView()"
         :field="$field"
@@ -8,6 +10,7 @@
        ax-load
        ax-load-src="{{ FilamentAsset::getAlpineComponentSrc('dropzone', 'kkosmider/filament-dropzone') }}"
        x-data="dropzoneComponent({
+               componentId: '{{ $componentId }}',
                maxFilesize: @js($getMaxFilesize()),
                acceptedFiles: @js($getAcceptedFiles()),
                chunkSize: @js($getChunkSize()),
@@ -32,7 +35,7 @@
        wire:ignore
        x-ignore
   >
-    <div class="dropzone block w-full border-none text-sm transition duration-75 focus-visible:border-primary-500 focus-visible:ring-1 focus-visible:ring-inset focus-visible:ring-primary-500 disabled:opacity-70 dark:bg-gray-700 dark:text-white dark:focus-visible:border-primary-500"
+    <div id="{{ $componentId }}" class="dropzone block w-full border-none text-sm transition duration-75 focus-visible:border-primary-500 focus-visible:ring-1 focus-visible:ring-inset focus-visible:ring-primary-500 disabled:opacity-70 dark:bg-gray-700 dark:text-white dark:focus-visible:border-primary-500"
     />
   </div>
 </x-dynamic-component>
