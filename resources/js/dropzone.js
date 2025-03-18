@@ -2,6 +2,7 @@ import Dropzone from "dropzone";
 import "dropzone/dist/dropzone.css";
 
 export default function dropzoneComponent({
+    componentId,
     maxFilesize,
     acceptedFiles,
     chunkSize,
@@ -29,7 +30,7 @@ export default function dropzoneComponent({
         state,
 
         init: async function () {
-            const dropzoneElement = document.querySelector(".dropzone");
+            const dropzoneElement = document.getElementById(componentId);
 
             if (directory === null) {
                 directory = '';
@@ -85,14 +86,15 @@ export default function dropzoneComponent({
                     : file.name
                 );
 
+                const totalFilesCount = this.dropzone.files.length;
+                const successfulUploadsCount = this.dropzone.getFilesWithStatus(Dropzone.SUCCESS).length;
                 const failedUploadsCount = this.dropzone.getFilesWithStatus(Dropzone.ERROR).length;
 
-                if (failedUploadsCount !== this.dropzone.files.length) {
+                if (successfulUploadsCount > failedUploadsCount) {
                     const notification = new window.FilamentNotification();
                     const title = successTitle ?? "Upload complete";
 
-                    notification.title(title)
-                        .success();
+                    notification.title(title);
 
                     if (successMessage) {
                         notification.body(successMessage);
@@ -105,23 +107,39 @@ export default function dropzoneComponent({
                     }
 
                     if (leaveFailed && failedUploadsCount > 0) {
+                        notification.warning();
                         notification.body('Some files failed to upload. Please check the list below.');
 
                         this.dropzone.getFilesWithStatus(Dropzone.SUCCESS).forEach((file) => {
                             this.dropzone.removeFile(file);
                         });
+                    } else {
+                        notification.success();
                     }
 
                     notification.send();
+                } else {
+                    const notification = new window.FilamentNotification();
+
+                    notification.title("Upload failed")
+                       .danger()
+                       .body(failedUploadsCount > 0? "Please check the list below." : "No files were uploaded.")
+                       .send();
                 }
 
                 this.dispatchFormEvent('form-processing-finished', {
-                    failedUploadsCount
+                    stats: {
+                        totalFilesCount,
+                        successfulUploadsCount,
+                        failedUploadsCount
+                    }
                 });
             });
 
             window.addEventListener('clear-dropzone', () => {
-                this.dropzone.removeAllFiles();
+                if (this.dropzone) {
+                    this.dropzone.removeAllFiles();
+                }
             });
         },
 
