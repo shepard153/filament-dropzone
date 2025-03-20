@@ -45,6 +45,6 @@ const defaultOptions = {
 
 compile({
     ...defaultOptions,
-    entryPoints: ['./resources/js/dropzone.js'],
-    outfile: './dist/dropzone.js',
+    entryPoints: ['./resources/js/dropzone.js', './resources/css/filament-dropzone.css'],
+    outdir: './dist',
 })
