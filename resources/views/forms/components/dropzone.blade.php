@@ -35,7 +35,14 @@
        wire:ignore
        x-ignore
   >
-    <div id="{{ $componentId }}" class="dropzone block w-full border-none text-sm transition duration-75 focus-visible:border-primary-500 focus-visible:ring-1 focus-visible:ring-inset focus-visible:ring-primary-500 disabled:opacity-70 dark:bg-gray-700 dark:text-white dark:focus-visible:border-primary-500"
+    <x-filament::grid id="{{ $componentId }}"
+                      class="dropzone grid block w-full border-none text-sm transition duration-75 focus-visible:border-primary-500 focus-visible:ring-1 focus-visible:ring-inset focus-visible:ring-primary-500 disabled:opacity-70 dark:bg-gray-700 dark:text-white dark:focus-visible:border-primary-500"
+                      :default="$getColumns('default')"
+                      :sm="$getColumns('sm')"
+                      :md="$getColumns('md')"
+                      :lg="$getColumns('lg')"
+                      :xl="$getColumns('xl')"
+                      :two-xl="$getColumns('2xl')"
     />
   </div>
 </x-dynamic-component>

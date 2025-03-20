@@ -21,8 +21,9 @@ class FilamentDropzoneServiceProvider extends PackageServiceProvider
     public function packageBooted(): void
     {
         FilamentAsset::register([
-            AlpineComponent::make('dropzone', __DIR__ . '/../dist/dropzone.js'),
-            Css::make('dropzone', __DIR__ . '/../dist/dropzone.css')
+            AlpineComponent::make('dropzone', __DIR__ . '/../dist/js/dropzone.js'),
+            Css::make('dropzone', __DIR__ . '/../dist/js/dropzone.css'),
+            Css::make('filament-dropzone', __DIR__ . '/../dist/css/filament-dropzone.css')
         ], 'kkosmider/filament-dropzone');
     }
 }
