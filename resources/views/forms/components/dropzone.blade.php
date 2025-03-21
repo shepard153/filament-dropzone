@@ -11,6 +11,7 @@
        ax-load-src="{{ FilamentAsset::getAlpineComponentSrc('dropzone', 'kkosmider/filament-dropzone') }}"
        x-data="dropzoneComponent({
                componentId: '{{ $componentId }}',
+               maxFiles: @js($getMaxFiles()),
                maxFilesize: @js($getMaxFilesize()),
                acceptedFiles: @js($getAcceptedFiles()),
                chunkSize: @js($getChunkSize()),
