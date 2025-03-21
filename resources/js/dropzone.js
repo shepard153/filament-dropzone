@@ -3,6 +3,7 @@ import "dropzone/dist/dropzone.css";
 
 export default function dropzoneComponent({
     componentId,
+    maxFiles,
     maxFilesize,
     acceptedFiles,
     chunkSize,
@@ -49,7 +50,7 @@ export default function dropzoneComponent({
                 retryChunks: retryChunks,
                 retryChunksLimit: retryChunksLimit,
                 dictDefaultMessage: defaultMessage,
-                maxFiles: allowMultiple ? null : 1,
+                maxFiles: allowMultiple ? maxFiles : 1,
             }
 
             this.dropzone = new Dropzone(dropzoneElement, options);
