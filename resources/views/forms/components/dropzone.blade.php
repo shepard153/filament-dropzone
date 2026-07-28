@@ -1,14 +1,18 @@
 @use('Filament\Support\Facades\FilamentAsset')
+@use('Filament\Support\View\ComponentAttributeBag')
 
-@php($componentId = \Illuminate\Support\Str::random(8))
+@php
+    $componentId = \Illuminate\Support\Str::random(8);
+    $gridAttributes = (new ComponentAttributeBag)->grid($getColumns());
+@endphp
 
 <x-dynamic-component
         :component="$getFieldWrapperView()"
         :field="$field"
 >
   <div class="flex w-full items-center rounded-lg border border-gray-300 bg-gray-100 text-sm shadow-sm dark:border-gray-700 dark:bg-gray-800"
-       ax-load
-       ax-load-src="{{ FilamentAsset::getAlpineComponentSrc('dropzone', 'kkosmider/filament-dropzone') }}"
+       x-load
+       x-load-src="{{ FilamentAsset::getAlpineComponentSrc('dropzone', 'kkosmider/filament-dropzone') }}"
        x-data="dropzoneComponent({
                componentId: '{{ $componentId }}',
                maxFiles: @js($getMaxFiles()),
@@ -18,7 +22,7 @@
                chunking: @js($getChunking()),
                allowMultiple: @js($getAllowMultiple()),
                parallelUploads: @js($getParallelUploads()),
-               parallelChunkUploads: @js($getParallelChunkUploads()),
+               parallelChunksUploads: @js($getParallelChunkUploads()),
                autoProcessQueue: @js($getAutoProcessQueue()),
                url: @js($getUploadEndpointUrl()),
                retryChunks: @js($getRetryChunks()),
@@ -34,16 +38,15 @@
                state: $wire.{{ $applyStateBindingModifiers("\$entangle('{$getStatePath()}')") }},
            })"
        wire:ignore
-       x-ignore
+       x:ignore
   >
-    <x-filament::grid id="{{ $componentId }}"
-                      class="dropzone grid block w-full border-none text-sm transition duration-75 focus-visible:border-primary-500 focus-visible:ring-1 focus-visible:ring-inset focus-visible:ring-primary-500 disabled:opacity-70 dark:bg-gray-700 dark:text-white dark:focus-visible:border-primary-500"
-                      :default="$getColumns('default')"
-                      :sm="$getColumns('sm')"
-                      :md="$getColumns('md')"
-                      :lg="$getColumns('lg')"
-                      :xl="$getColumns('xl')"
-                      :two-xl="$getColumns('2xl')"
-    />
+    <div
+        id="{{ $componentId }}"
+        {{
+            $gridAttributes->class([
+                'dropzone block w-full border-none text-sm transition duration-75 focus-visible:border-primary-500 focus-visible:ring-1 focus-visible:ring-inset focus-visible:ring-primary-500 disabled:opacity-70 dark:bg-gray-700 dark:text-white dark:focus-visible:border-primary-500',
+            ])
+        }}
+    ></div>
   </div>
 </x-dynamic-component>

@@ -8,6 +8,9 @@ See below for more information.
 ## Installation
 ```bash
 composer require kkosmider/filament-dropzone
+
+// For Filament v3
+composer require kkosmider/filament-dropzone:0.5.2
 ```
 
 ## Usage
