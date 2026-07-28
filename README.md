@@ -9,6 +9,9 @@ See below for more information.
 ```bash
 composer require kkosmider/filament-dropzone
 
+// For Filament v4
+composer require kkosmider/filament-dropzone:0.5.4
+
 // For Filament v3
 composer require kkosmider/filament-dropzone:0.5.2
 ```
