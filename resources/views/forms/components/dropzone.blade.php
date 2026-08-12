@@ -38,7 +38,6 @@
                state: $wire.{{ $applyStateBindingModifiers("\$entangle('{$getStatePath()}')") }},
            })"
        wire:ignore
-       x:ignore
   >
     <div
         id="{{ $componentId }}"
