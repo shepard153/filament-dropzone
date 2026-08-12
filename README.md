@@ -10,7 +10,7 @@ See below for more information.
 composer require kkosmider/filament-dropzone
 
 // For Filament v4
-composer require kkosmider/filament-dropzone:0.5.4
+composer require kkosmider/filament-dropzone:0.5.5
 
 // For Filament v3
 composer require kkosmider/filament-dropzone:0.5.2
